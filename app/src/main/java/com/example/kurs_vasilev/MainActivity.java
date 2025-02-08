@@ -85,21 +85,36 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-
+        Data.getNews.start();
         Data.getCabinets.start();
+
+
         try {
             Data.getCabinets.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        Data.getNews.start();
         try {
             Data.getNews.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        for (Cabinets el : Data.cabinets) {
+            Data.getSchedule.setCabinetNumber(el.number);
+            Data.getSchedule.start();
+            try {
+                Data.getSchedule.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (Data.schedules.size() != 0){
+                el.schedules = (ArrayList<Schedule>) Data.schedules.clone();
+            }
+            Data.getSchedule = new Data.GetSchedule();
+        }
+
         ArrayList imageViews = new ArrayList();
         imageViews.add(R.id.imageView1);
         imageViews.add(R.id.imageView2);
@@ -386,7 +401,9 @@ public class MainActivity extends AppCompatActivity {
     public void getInfoOfCabinet(){
         Context context = this; // или getActivity() в фрагменте, this в Activity
         for (int i = 0; i < Data.cabinets.size(); i++){
-            int resId = context.getResources().getIdentifier("button" + Data.cabinets.get(i).number , "id", context.getPackageName());
+            String cabinetName = Data.cabinets.get(i).number;
+            String buttonName = "button" + cabinetName;
+            int resId = context.getResources().getIdentifier(buttonName , "id", context.getPackageName());
            Log.e("S", "getInfoOfCabinet: " + resId + "\t" + "button" + Data.cabinets.get(i).number);
             ImageButton myButton = findViewById(resId);
 
@@ -414,7 +431,19 @@ public class MainActivity extends AppCompatActivity {
                     TextView descriptionTextView = dialogView.findViewById(R.id.description);
 
                     textView.setText("Кабинет " + t.number);
-                    descriptionTextView.setText(t.description);
+
+                    String tt = "";
+                    if (t.schedules != null){
+                        for (Schedule s : t.schedules){
+
+                            tt += s.getFormattedSchedule() + "\n";
+
+                        }
+                    }
+                    else {
+                        tt = "пошел нахуй" + t.number;
+                    }
+                    descriptionTextView.setText(tt);
 
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -441,6 +470,7 @@ public class MainActivity extends AppCompatActivity {
                 myButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         int buttonId = v.getId();
                         String buttonIdString = getResources().getResourceName(buttonId).replaceAll("com.example.kurs_vasilev:id/button", "");
                         String cabinetNumber = buttonIdString.substring(0, buttonIdString.length() - 1); // Удаляем букву "B" из buttonIdString
@@ -460,7 +490,17 @@ public class MainActivity extends AppCompatActivity {
                         TextView descriptionTextView = dialogView.findViewById(R.id.description);
 
                         textView.setText("Кабинет " + t.number);
-                        descriptionTextView.setText(t.description);
+                        String tt = "";
+                        if (t.schedules != null){
+                            for (Schedule s : t.schedules){
+                                tt += s.getFormattedSchedule() + "\n";
+
+                            }
+                        }
+                        else {
+                            tt = "пошел нахуй" + t.number;
+                        }
+                        descriptionTextView.setText(tt);
 
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override

@@ -326,7 +326,6 @@
             app:layout_constraintVertical_bias="0.757" />
 
 
-
     </com.example.kurs_vasilev.ZoomableConstraintLayout>
     <com.example.kurs_vasilev.ZoomableConstraintLayout
         android:id="@+id/containerBigMap"
@@ -860,15 +859,16 @@
 
 
     </com.example.kurs_vasilev.ZoomableConstraintLayout>
+
     <com.example.kurs_vasilev.ZoomableConstraintLayout
         android:id="@+id/containerBigMap2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/buildingMapBig2"
@@ -2354,25 +2354,24 @@
             android:layout_width="123dp"
             android:layout_height="145dp"
             android:background="#FFFFFF"
-            android:visibility="visible"
             android:src="@drawable/infof1"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-        />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/infoFlor2"
             android:layout_width="123dp"
             android:layout_height="145dp"
             android:background="#FFFFFF"
-            android:visibility="gone"
             android:src="@drawable/infof2"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-        />
+            app:layout_constraintTop_toTopOf="parent" />
         <ImageView
             android:id="@+id/infoFlor3"
             android:layout_width="123dp"
